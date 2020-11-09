@@ -1,4 +1,4 @@
-package com.appleby.breakingbad
+package com.appleby.breakingbad.networkmodel
 
 data class Character (
     val char_id : Int,

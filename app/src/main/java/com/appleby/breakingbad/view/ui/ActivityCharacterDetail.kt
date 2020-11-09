@@ -1,9 +1,11 @@
-package com.appleby.breakingbad
+package com.appleby.breakingbad.view.ui
 
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.appleby.breakingbad.model.CharacterRepo
+import com.appleby.breakingbad.R
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_detail.*
 

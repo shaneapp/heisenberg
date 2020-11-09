@@ -1,5 +1,6 @@
 package com.appleby.breakingbad
 
+import com.appleby.breakingbad.networkmodel.Character
 import io.reactivex.Observable
 import retrofit2.Response
 import retrofit2.Retrofit

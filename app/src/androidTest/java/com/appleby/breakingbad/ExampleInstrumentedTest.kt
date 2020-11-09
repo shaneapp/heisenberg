@@ -2,8 +2,10 @@ package com.appleby.breakingbad
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
-import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.appleby.breakingbad.model.CharacterRepo
+import com.appleby.breakingbad.viewmodel.CharacterListViewModel
+import com.appleby.breakingbad.viewmodel.CharacterStates
 import io.mockk.*
 
 import org.junit.Test

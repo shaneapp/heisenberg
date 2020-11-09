@@ -1,4 +1,4 @@
-package com.appleby.breakingbad
+package com.appleby.breakingbad.view.ui
 
 import android.content.DialogInterface
 import androidx.appcompat.app.AppCompatActivity
@@ -9,15 +9,21 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
+import com.appleby.breakingbad.*
+import com.appleby.breakingbad.model.CharacterRepo
+import com.appleby.breakingbad.view.adapter.CharacterListAdapter
+import com.appleby.breakingbad.viewmodel.CharacterListViewModel
+import com.appleby.breakingbad.viewmodel.CharacterStates
 import kotlinx.android.synthetic.main.activity_main.*
 
 class ActivityCharacterSelect : AppCompatActivity() {
 
     private val viewModel: CharacterListViewModel by viewModels()
 
-    private val characterListAdapter = CharacterListAdapter(this) {
-        startActivity(ActivityCharacterDetail.prepareIntent(this, it))
-    }
+    private val characterListAdapter =
+        CharacterListAdapter(this) {
+            startActivity(ActivityCharacterDetail.prepareIntent(this, it))
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
