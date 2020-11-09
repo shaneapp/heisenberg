@@ -1,9 +1,12 @@
 package com.appleby.breakingbad
 
+import android.content.DialogInterface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
+import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
@@ -30,6 +33,16 @@ class ActivityCharacterSelect : AppCompatActivity() {
 
         rvCharacterList.layoutManager = GridLayoutManager(this, 2)
         rvCharacterList.adapter = characterListAdapter
+
+        etSearch.doOnTextChanged { _, _, _, _ ->
+            viewModel.requestFilterRefresh()
+        }
+
+        ivCross.setOnClickListener { etSearch.text.clear() }
+
+        ivFilter.setOnClickListener {
+            showSeasonFilter()
+        }
     }
 
     override fun onResume() {
@@ -40,6 +53,19 @@ class ActivityCharacterSelect : AppCompatActivity() {
 
     private fun updateRecyclerView(season: Int) {
         characterListAdapter.updateData(CharacterRepo.characters)
+    }
+
+    private fun showSeasonFilter() {
+        val seasonDialog = AlertDialog.Builder(this)
+            .setTitle("Filter by season")
+            .setItems(arrayOf("All Seasons", "Season 1", "Season 2", "Season 3", "Season 4", "Season 5"), object : DialogInterface.OnClickListener {
+                override fun onClick(dialog: DialogInterface?, which: Int) {
+                    dialog?.dismiss()
+                    viewModel.refreshSeasonFilter(which)
+                }
+            })
+
+        seasonDialog.show()
     }
 
 }
