@@ -52,7 +52,19 @@ class ActivityCharacterSelect : AppCompatActivity() {
     }
 
     private fun updateRecyclerView(season: Int) {
-        characterListAdapter.updateData(CharacterRepo.characters)
+        var filteredCharacters = CharacterRepo.characters.sortedBy { it.name }
+
+        val nameFilter = etSearch.text
+        if (nameFilter.isNotEmpty()) {
+            filteredCharacters = filteredCharacters.filter { it.name.toLowerCase().contains(nameFilter) }
+        }
+
+        if (season > 0) {
+            filteredCharacters = filteredCharacters.filter { !it.appearance.isNullOrEmpty() }
+                .filter { it.appearance.contains(season) }
+        }
+
+        characterListAdapter.updateData(filteredCharacters)
     }
 
     private fun showSeasonFilter() {
