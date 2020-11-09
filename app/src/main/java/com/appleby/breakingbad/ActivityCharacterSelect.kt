@@ -15,7 +15,9 @@ class ActivityCharacterSelect : AppCompatActivity() {
 
     private val viewModel: CharacterListViewModel by viewModels()
 
-    private val characterListAdapter = CharacterListAdapter(this)
+    private val characterListAdapter = CharacterListAdapter(this) {
+        startActivity(ActivityCharacterDetail.prepareIntent(this, it))
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

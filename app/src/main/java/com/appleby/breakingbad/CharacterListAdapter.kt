@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.character_listitem.view.*
 
-class CharacterListAdapter(private val context: Context) : RecyclerView.Adapter<CharacterListAdapter.ViewHolder>() {
+class CharacterListAdapter(private val context: Context, private val itemClick: ((characterId: Int) -> Unit)) : RecyclerView.Adapter<CharacterListAdapter.ViewHolder>() {
 
     private val characterData = mutableListOf<Character>()
 
@@ -25,6 +25,8 @@ class CharacterListAdapter(private val context: Context) : RecyclerView.Adapter<
             .into(holder.ivCharacterImage)
 
         holder.ivCharacterName.text = characterItem.name
+
+        holder.view.setOnClickListener { itemClick(characterItem.char_id) }
     }
 
     override fun getItemCount(): Int {
