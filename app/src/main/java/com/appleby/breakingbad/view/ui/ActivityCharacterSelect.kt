@@ -10,7 +10,7 @@ import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.appleby.breakingbad.*
-import com.appleby.breakingbad.model.CharacterRepo
+import com.appleby.breakingbad.networkmodel.Items
 import com.appleby.breakingbad.view.adapter.CharacterListAdapter
 import com.appleby.breakingbad.viewmodel.CharacterListViewModel
 import com.appleby.breakingbad.viewmodel.CharacterStates
@@ -31,8 +31,7 @@ class ActivityCharacterSelect : AppCompatActivity() {
 
         viewModel.result.observe(this, Observer {
             when(it) {
-                is CharacterStates.NetworkSuccess -> updateRecyclerView(it.season)
-                is CharacterStates.SeasonFilter -> updateRecyclerView(it.season)
+                is CharacterStates.NetworkSuccess -> updateRecyclerView(it.imageResults)
                 is CharacterStates.NetworkFailure -> {
                     Toast.makeText(this, "Request failed", Toast.LENGTH_SHORT).show()
                 }
@@ -43,7 +42,7 @@ class ActivityCharacterSelect : AppCompatActivity() {
         rvCharacterList.adapter = characterListAdapter
 
         etSearch.doOnTextChanged { _, _, _, _ ->
-            viewModel.requestFilterRefresh()
+            //viewModel.requestFilterRefresh()
         }
 
         ivCross.setOnClickListener { etSearch.text.clear() }
@@ -59,33 +58,33 @@ class ActivityCharacterSelect : AppCompatActivity() {
         viewModel.requestCharacters()
     }
 
-    private fun updateRecyclerView(season: Int) {
-        var filteredCharacters = CharacterRepo.characters.sortedBy { it.name }
+    private fun updateRecyclerView(imageResults: List<Items>) {
+        var filteredCharacters = imageResults
 
-        val nameFilter = etSearch.text
-        if (nameFilter.isNotEmpty()) {
-            filteredCharacters = filteredCharacters.filter { it.name.toLowerCase().contains(nameFilter) }
-        }
-
-        if (season > 0) {
-            filteredCharacters = filteredCharacters.filter { !it.appearance.isNullOrEmpty() }
-                .filter { it.appearance.contains(season) }
-        }
+//        val nameFilter = etSearch.text
+//        if (nameFilter.isNotEmpty()) {
+//            filteredCharacters = filteredCharacters.filter { it.name.toLowerCase().contains(nameFilter) }
+//        }
+//
+//        if (season > 0) {
+//            filteredCharacters = filteredCharacters.filter { !it.appearance.isNullOrEmpty() }
+//                .filter { it.appearance.contains(season) }
+//        }
 
         characterListAdapter.updateData(filteredCharacters)
     }
 
     private fun showSeasonFilter() {
-        val seasonDialog = AlertDialog.Builder(this)
-            .setTitle("Filter by season")
-            .setItems(arrayOf("All Seasons", "Season 1", "Season 2", "Season 3", "Season 4", "Season 5"), object : DialogInterface.OnClickListener {
-                override fun onClick(dialog: DialogInterface?, which: Int) {
-                    dialog?.dismiss()
-                    viewModel.refreshSeasonFilter(which)
-                }
-            })
-
-        seasonDialog.show()
+//        val seasonDialog = AlertDialog.Builder(this)
+//            .setTitle("Filter by season")
+//            .setItems(arrayOf("All Seasons", "Season 1", "Season 2", "Season 3", "Season 4", "Season 5"), object : DialogInterface.OnClickListener {
+//                override fun onClick(dialog: DialogInterface?, which: Int) {
+//                    dialog?.dismiss()
+//                    viewModel.refreshSeasonFilter(which)
+//                }
+//            })
+//
+//        seasonDialog.show()
     }
 
 }

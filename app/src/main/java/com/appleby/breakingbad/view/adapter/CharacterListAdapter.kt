@@ -5,14 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.appleby.breakingbad.networkmodel.Character
 import com.appleby.breakingbad.R
+import com.appleby.breakingbad.networkmodel.Items
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.character_listitem.view.*
 
 class CharacterListAdapter(private val context: Context, private val itemClick: ((characterId: Int) -> Unit)) : RecyclerView.Adapter<CharacterListAdapter.ViewHolder>() {
 
-    private val characterData = mutableListOf<Character>()
+    private val characterData = mutableListOf<Items>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         var layoutInflater = LayoutInflater.from(parent.context)
@@ -29,19 +29,19 @@ class CharacterListAdapter(private val context: Context, private val itemClick: 
         val characterItem = characterData[position]
 
         Glide.with(context)
-            .load(characterItem.img)
+            .load(characterItem.link)
             .into(holder.ivCharacterImage)
 
-        holder.ivCharacterName.text = characterItem.name
+        //holder.ivCharacterName.text = characterItem.name
 
-        holder.view.setOnClickListener { itemClick(characterItem.char_id) }
+        //holder.view.setOnClickListener { itemClick(characterItem.char_id) }
     }
 
     override fun getItemCount(): Int {
         return characterData.count()
     }
 
-    fun updateData(data: List<Character>) {
+    fun updateData(data: List<Items>) {
         characterData.clear()
         characterData.addAll(data)
         notifyDataSetChanged()
