@@ -6,60 +6,9 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <FrameLayout
+    <ImageView
+        android:id="@+id/ivPreview"
         android:layout_width="match_parent"
-        android:layout_height="350dp" >
-
-        <ImageView
-            android:id="@+id/ivDetailImage"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="centerCrop"/>
-
-        <TextView
-            android:id="@+id/tvNickname"
-            android:layout_width="match_parent"
-            android:textSize="28sp"
-            android:layout_height="wrap_content"
-            android:textColor="@android:color/white"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:text="" />
-
-    </FrameLayout>
-
-    <TextView
-        android:id="@+id/tvName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="26sp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="12dp"
-        android:text="Name" />
-
-    <TextView
-        android:id="@+id/tvOccupation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:layout_marginLeft="20dp"
-        android:text="Occupation" />
-
-    <TextView
-        android:id="@+id/tvSeason"
-        android:textSize="20sp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:text="Season X"/>
-
-    <TextView
-        android:id="@+id/tvStatus"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAlignment="center"
-        android:textSize="42sp"
-        android:layout_marginTop="20dp"
-        android:text="Status" />
+        android:layout_height="match_parent" />
 
 </LinearLayout>

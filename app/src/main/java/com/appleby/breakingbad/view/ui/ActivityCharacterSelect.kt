@@ -4,6 +4,7 @@ import android.content.DialogInterface
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.inputmethod.EditorInfo
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -13,19 +14,32 @@ import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.appleby.breakingbad.R
+import com.appleby.breakingbad.model.DataStore
 import com.appleby.breakingbad.networkmodel.Items
 import com.appleby.breakingbad.view.adapter.CharacterListAdapter
 import com.appleby.breakingbad.viewmodel.CharacterListViewModel
 import com.appleby.breakingbad.viewmodel.CharacterStates
+import com.bumptech.glide.Glide
+import com.stfalcon.imageviewer.StfalconImageViewer
+import com.stfalcon.imageviewer.loader.ImageLoader
 import kotlinx.android.synthetic.main.activity_main.*
 
 class ActivityCharacterSelect : AppCompatActivity() {
 
     private val viewModel: CharacterListViewModel by viewModels()
 
+    private lateinit var viewer: StfalconImageViewer<Items>
+
     private val characterListAdapter =
-        CharacterListAdapter(this) {
-            startActivity(ActivityCharacterDetail.prepareIntent(this, it))
+        CharacterListAdapter(this) { index, target ->
+//            startActivity(ActivityCharacterDetail.prepareIntent(this, it))
+            StfalconImageViewer.Builder<Items>(this, DataStore.lastSearch) { imageView, item ->
+                Glide.with(this@ActivityCharacterSelect).load(item.link).into(imageView)
+            }
+                .withStartPosition(index)
+                .allowZooming(true)
+                .withTransitionFrom(target)
+                .show()
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -4,13 +4,14 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.appleby.breakingbad.R
 import com.appleby.breakingbad.networkmodel.Items
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.character_listitem.view.*
 
-class CharacterListAdapter(private val context: Context, private val itemClick: ((characterId: Int) -> Unit)) : RecyclerView.Adapter<CharacterListAdapter.ViewHolder>() {
+class CharacterListAdapter(private val context: Context, private val itemClick: ((index: Int, target: ImageView) -> Unit)) : RecyclerView.Adapter<CharacterListAdapter.ViewHolder>() {
 
     private val characterData = mutableListOf<Items>()
 
@@ -36,7 +37,7 @@ class CharacterListAdapter(private val context: Context, private val itemClick: 
 
         //holder.ivCharacterName.text = characterItem.name
 
-        //holder.view.setOnClickListener { itemClick(characterItem.char_id) }
+        holder.view.setOnClickListener { itemClick(position, holder.ivCharacterImage) }
     }
 
     override fun getItemCount(): Int {

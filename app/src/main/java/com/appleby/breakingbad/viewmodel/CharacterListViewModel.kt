@@ -26,6 +26,7 @@ class CharacterListViewModel : ViewModel() {
                 if (characterResponse.isSuccessful) {
                     characterResponse.body()?.let {
 
+                        DataStore.lastSearch = ArrayList(it.items)
                         _result.value = CharacterStates.NetworkSuccess(it.items)
 
                     } ?: run {
