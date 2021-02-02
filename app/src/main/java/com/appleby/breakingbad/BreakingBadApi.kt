@@ -29,6 +29,7 @@ object BreakingBadApi {
         @GET("customsearch/v1")
         fun getGoogleImageResults(@Query("q") query : String,
                                   @Query("num") amount: Int,
+                                  @Query("start") offset: Int,
                                   @Query("searchType") searchType : String = "image",
                                   @Query("imgSize") imageSize : String = DataStore.imageFilter,
                                   @Query("key") key : String = google_custom_search_api,

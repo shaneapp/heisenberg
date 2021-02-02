@@ -1,5 +1,6 @@
 package com.appleby.breakingbad.viewmodel
 
+import android.provider.ContactsContract
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -17,17 +18,21 @@ class CharacterListViewModel : ViewModel() {
     private val _result: MutableLiveData<CharacterStates> = MutableLiveData()
     val result: LiveData<CharacterStates> = _result
 
-    fun performImageSearch(searchQuery : String) {
+    fun clearPreviousSearchCache() {
+        DataStore.lastSearch.clear()
+    }
+
+    fun performImageSearch(searchQuery : String, offsetIndex: Int) {
         BreakingBadApi.service
-            .getGoogleImageResults(searchQuery.replace("\\s".toRegex(), "+"), 10)
+            .getGoogleImageResults(searchQuery.replace("\\s".toRegex(), "+"), 10, offsetIndex)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ characterResponse ->
                 if (characterResponse.isSuccessful) {
                     characterResponse.body()?.let {
 
-                        DataStore.lastSearch = ArrayList(it.items)
-                        _result.value = CharacterStates.NetworkSuccess(it.items)
+                        DataStore.lastSearch.addAll(it.items)
+                        _result.value = CharacterStates.NetworkSuccess
 
                     } ?: run {
                         _result.value =

@@ -4,7 +4,6 @@ import android.content.DialogInterface
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.inputmethod.EditorInfo
-import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -12,6 +11,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.appleby.breakingbad.R
 import com.appleby.breakingbad.model.DataStore
@@ -21,7 +21,6 @@ import com.appleby.breakingbad.viewmodel.CharacterListViewModel
 import com.appleby.breakingbad.viewmodel.CharacterStates
 import com.bumptech.glide.Glide
 import com.stfalcon.imageviewer.StfalconImageViewer
-import com.stfalcon.imageviewer.loader.ImageLoader
 import kotlinx.android.synthetic.main.activity_main.*
 
 class ActivityCharacterSelect : AppCompatActivity() {
@@ -48,17 +47,25 @@ class ActivityCharacterSelect : AppCompatActivity() {
 
         viewModel.result.observe(this, Observer {
             when(it) {
-                is CharacterStates.NetworkSuccess -> updateRecyclerView(it.imageResults)
+                is CharacterStates.NetworkSuccess -> updateRecyclerView()
                 is CharacterStates.NetworkFailure -> {
                     Toast.makeText(this, "Request failed", Toast.LENGTH_SHORT).show()
                 }
             }
         })
 
+
         val staggeredLayout = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         staggeredLayout.gapStrategy = StaggeredGridLayoutManager.GAP_HANDLING_NONE
         rvCharacterList.layoutManager = staggeredLayout
         rvCharacterList.adapter = characterListAdapter
+        rvCharacterList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    viewModel.performImageSearch(etSearch.text.toString(), characterListAdapter.itemCount)
+                }
+            }
+        })
 
         etSearch.doOnTextChanged { _, _, _, _ ->
             //viewModel.requestFilterRefresh()
@@ -67,7 +74,8 @@ class ActivityCharacterSelect : AppCompatActivity() {
         etSearch.setOnEditorActionListener(object : TextView.OnEditorActionListener {
             override fun onEditorAction(v: TextView?, actionId: Int, event: KeyEvent?): Boolean {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    viewModel.performImageSearch(etSearch.text.toString())
+                    viewModel.clearPreviousSearchCache()
+                    viewModel.performImageSearch(etSearch.text.toString(), characterListAdapter.itemCount)
                     return true
                 }
                 return false
@@ -86,8 +94,8 @@ class ActivityCharacterSelect : AppCompatActivity() {
 
     }
 
-    private fun updateRecyclerView(imageResults: List<Items>) {
-        var filteredCharacters = imageResults
+    private fun updateRecyclerView() {
+        var filteredCharacters = DataStore.lastSearch
 
 //        val nameFilter = etSearch.text
 //        if (nameFilter.isNotEmpty()) {
@@ -111,7 +119,7 @@ class ActivityCharacterSelect : AppCompatActivity() {
                 override fun onClick(dialog: DialogInterface?, which: Int) {
                     dialog?.dismiss()
                     viewModel.updateImageFilter(imageSizeCode[which])
-                    viewModel.performImageSearch(etSearch.text.toString())
+                    viewModel.performImageSearch(etSearch.text.toString(), characterListAdapter.itemCount)
                 }
             })
 
