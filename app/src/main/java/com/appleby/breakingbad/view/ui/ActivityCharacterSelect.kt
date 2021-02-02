@@ -22,6 +22,9 @@ import com.appleby.breakingbad.viewmodel.CharacterStates
 import com.bumptech.glide.Glide
 import com.stfalcon.imageviewer.StfalconImageViewer
 import kotlinx.android.synthetic.main.activity_main.*
+import org.joda.time.DateTime
+import org.joda.time.DateTimeZone
+import org.joda.time.Period
 
 class ActivityCharacterSelect : AppCompatActivity() {
 
@@ -92,10 +95,25 @@ class ActivityCharacterSelect : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
+        refreshUsageInfo()
+    }
+
+    private fun refreshUsageInfo() {
+        val timeZone = DateTimeZone.forID("America/Los_Angeles")
+        val midnightInPT = DateTime(timeZone).plusDays(1).withTimeAtStartOfDay()
+        val timeBetweenNowAndMidnightPT = Period(DateTime.now(), midnightInPT)
+        if (DataStore.googleApiUsageCounter < 1) {
+            tvApiUsage.text =
+                "Usage resets in ${timeBetweenNowAndMidnightPT.hours}h ${timeBetweenNowAndMidnightPT.minutes}m"
+        } else {
+            tvApiUsage.text = DataStore.googleApiUsageCounter.toString()
+        }
     }
 
     private fun updateRecyclerView() {
         var filteredCharacters = DataStore.lastSearch
+
+        refreshUsageInfo()
 
 //        val nameFilter = etSearch.text
 //        if (nameFilter.isNotEmpty()) {

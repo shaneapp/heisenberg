@@ -4,6 +4,7 @@ import com.appleby.breakingbad.networkmodel.Image
 import com.appleby.breakingbad.networkmodel.Items
 
 object DataStore {
+    var googleApiUsageCounter = 0
     var imageFilter = "large"
     var lastSearch = arrayListOf<Items>()
 }

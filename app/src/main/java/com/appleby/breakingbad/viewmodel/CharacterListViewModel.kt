@@ -31,6 +31,7 @@ class CharacterListViewModel : ViewModel() {
                 if (characterResponse.isSuccessful) {
                     characterResponse.body()?.let {
 
+                        DataStore.googleApiUsageCounter -= 1
                         DataStore.lastSearch.addAll(it.items)
                         _result.value = CharacterStates.NetworkSuccess
 
