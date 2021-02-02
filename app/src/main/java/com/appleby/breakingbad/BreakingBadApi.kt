@@ -1,5 +1,6 @@
 package com.appleby.breakingbad
 
+import com.appleby.breakingbad.model.DataStore
 import com.appleby.breakingbad.networkmodel.GoogleResult
 import io.reactivex.Observable
 import retrofit2.Response
@@ -29,6 +30,7 @@ object BreakingBadApi {
         fun getGoogleImageResults(@Query("q") query : String,
                                   @Query("num") amount: Int,
                                   @Query("searchType") searchType : String = "image",
+                                  @Query("imgSize") imageSize : String = DataStore.imageFilter,
                                   @Query("key") key : String = google_custom_search_api,
                                   @Query("cx") searchEngineId : String = search_engine_id) : Observable<Response<GoogleResult>>
     }

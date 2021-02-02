@@ -1,8 +1,13 @@
 package com.appleby.breakingbad.view.ui
 
+import android.content.DialogInterface
 import android.os.Bundle
+import android.view.KeyEvent
+import android.view.inputmethod.EditorInfo
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.Observer
@@ -36,14 +41,24 @@ class ActivityCharacterSelect : AppCompatActivity() {
             }
         })
 
-        val staggeredLayout = StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL)
-        staggeredLayout.gapStrategy = StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS
+        val staggeredLayout = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+        staggeredLayout.gapStrategy = StaggeredGridLayoutManager.GAP_HANDLING_NONE
         rvCharacterList.layoutManager = staggeredLayout
         rvCharacterList.adapter = characterListAdapter
 
         etSearch.doOnTextChanged { _, _, _, _ ->
             //viewModel.requestFilterRefresh()
         }
+
+        etSearch.setOnEditorActionListener(object : TextView.OnEditorActionListener {
+            override fun onEditorAction(v: TextView?, actionId: Int, event: KeyEvent?): Boolean {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    viewModel.performImageSearch(etSearch.text.toString())
+                    return true
+                }
+                return false
+            }
+        })
 
         ivCross.setOnClickListener { etSearch.text.clear() }
 
@@ -55,7 +70,6 @@ class ActivityCharacterSelect : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
-        viewModel.requestCharacters()
     }
 
     private fun updateRecyclerView(imageResults: List<Items>) {
@@ -75,16 +89,19 @@ class ActivityCharacterSelect : AppCompatActivity() {
     }
 
     private fun showSeasonFilter() {
-//        val seasonDialog = AlertDialog.Builder(this)
-//            .setTitle("Filter by season")
-//            .setItems(arrayOf("All Seasons", "Season 1", "Season 2", "Season 3", "Season 4", "Season 5"), object : DialogInterface.OnClickListener {
-//                override fun onClick(dialog: DialogInterface?, which: Int) {
-//                    dialog?.dismiss()
-//                    viewModel.refreshSeasonFilter(which)
-//                }
-//            })
-//
-//        seasonDialog.show()
+        val imageSizeCode = arrayOf("icon", "small", "medium", "large", "xlarge", "xxlarge", "huge")
+        val imageSizeDisplay = arrayOf("Icon", "Small", "Medium", "Large", "Extra Large", "Super Large", "Huge")
+        val seasonDialog = AlertDialog.Builder(this)
+            .setTitle("Image Size")
+            .setItems(imageSizeDisplay, object : DialogInterface.OnClickListener {
+                override fun onClick(dialog: DialogInterface?, which: Int) {
+                    dialog?.dismiss()
+                    viewModel.updateImageFilter(imageSizeCode[which])
+                    viewModel.performImageSearch(etSearch.text.toString())
+                }
+            })
+
+        seasonDialog.show()
     }
 
 }
