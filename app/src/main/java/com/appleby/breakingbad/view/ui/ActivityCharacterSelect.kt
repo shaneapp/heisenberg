@@ -1,15 +1,13 @@
 package com.appleby.breakingbad.view.ui
 
-import android.content.DialogInterface
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.GridLayoutManager
-import com.appleby.breakingbad.*
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.appleby.breakingbad.R
 import com.appleby.breakingbad.networkmodel.Items
 import com.appleby.breakingbad.view.adapter.CharacterListAdapter
 import com.appleby.breakingbad.viewmodel.CharacterListViewModel
@@ -38,7 +36,9 @@ class ActivityCharacterSelect : AppCompatActivity() {
             }
         })
 
-        rvCharacterList.layoutManager = GridLayoutManager(this, 2)
+        val staggeredLayout = StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL)
+        staggeredLayout.gapStrategy = StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS
+        rvCharacterList.layoutManager = staggeredLayout
         rvCharacterList.adapter = characterListAdapter
 
         etSearch.doOnTextChanged { _, _, _, _ ->

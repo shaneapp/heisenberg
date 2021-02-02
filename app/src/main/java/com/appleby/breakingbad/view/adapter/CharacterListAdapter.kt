@@ -32,6 +32,8 @@ class CharacterListAdapter(private val context: Context, private val itemClick: 
             .load(characterItem.link)
             .into(holder.ivCharacterImage)
 
+        holder.ivCharacterImage.clipToOutline = true
+
         //holder.ivCharacterName.text = characterItem.name
 
         //holder.view.setOnClickListener { itemClick(characterItem.char_id) }
@@ -49,7 +51,7 @@ class CharacterListAdapter(private val context: Context, private val itemClick: 
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var ivCharacterImage = itemView.ivImage
-        var ivCharacterName = itemView.tvName
+//        var ivCharacterName = itemView.tvName
         var view = itemView
     }
 

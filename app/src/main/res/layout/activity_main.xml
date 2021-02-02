@@ -8,7 +8,8 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="12dp"
         android:orientation="horizontal"
         android:background="@color/colorPrimary">
 
@@ -17,29 +18,37 @@
             android:layout_width="0dp"
             android:layout_weight="2"
             android:layout_height="match_parent"
-            android:textColor="@android:color/white"
+            android:textColor="@color/darkGray"
+            android:background="@drawable/rounded_search"
+            android:textStyle="bold"
+            android:textSize="20sp"
             android:paddingLeft="20dp"
-            android:hint="Search..."
-            android:textColorHint="@android:color/white"/>
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="1dp"
+            android:hint="Search"
+            android:textColorHint="@color/darkGray"/>
 
         <ImageView
             android:id="@+id/ivCross"
             android:layout_width="38dp"
             android:layout_height="38dp"
             android:layout_marginRight="30dp"
+            android:layout_marginTop="4dp"
             android:src="@drawable/cross"
             android:padding="10dp"
             android:layout_gravity="center_vertical"
-            app:tint="@android:color/white" />
+            app:tint="@color/darkGray" />
 
         <ImageView
             android:id="@+id/ivFilter"
             android:layout_width="38dp"
             android:layout_height="38dp"
             android:layout_marginRight="20dp"
+            android:layout_marginTop="4dp"
             android:padding="3dp"
             android:src="@drawable/filter"
-            app:tint="@android:color/white"
+            app:tint="@color/darkGray"
             android:layout_gravity="center_vertical"/>
 
     </LinearLayout>
