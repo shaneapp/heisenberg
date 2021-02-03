@@ -11,7 +11,7 @@ import com.appleby.breakingbad.networkmodel.Items
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.character_listitem.view.*
 
-class CharacterListAdapter(private val context: Context, private val itemClick: ((index: Int, target: ImageView) -> Unit)) : RecyclerView.Adapter<CharacterListAdapter.ViewHolder>() {
+class ImageResultsListAdapter(private val context: Context, private val itemClick: ((index: Int, target: ImageView) -> Unit)) : RecyclerView.Adapter<ImageResultsListAdapter.ViewHolder>() {
 
     private val characterData = mutableListOf<Items>()
 

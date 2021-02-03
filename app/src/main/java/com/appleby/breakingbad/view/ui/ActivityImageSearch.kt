@@ -1,6 +1,8 @@
 package com.appleby.breakingbad.view.ui
 
+import android.content.Context
 import android.content.DialogInterface
+import android.content.Intent
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.inputmethod.EditorInfo
@@ -16,27 +18,27 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.appleby.breakingbad.R
 import com.appleby.breakingbad.model.DataStore
 import com.appleby.breakingbad.networkmodel.Items
-import com.appleby.breakingbad.view.adapter.CharacterListAdapter
-import com.appleby.breakingbad.viewmodel.CharacterListViewModel
-import com.appleby.breakingbad.viewmodel.CharacterStates
+import com.appleby.breakingbad.view.adapter.ImageResultsListAdapter
+import com.appleby.breakingbad.viewmodel.ImageSearchViewModel
+import com.appleby.breakingbad.viewmodel.ImageSearchState
 import com.bumptech.glide.Glide
 import com.stfalcon.imageviewer.StfalconImageViewer
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_image_search.*
 import org.joda.time.DateTime
 import org.joda.time.DateTimeZone
 import org.joda.time.Period
 
-class ActivityCharacterSelect : AppCompatActivity() {
+class ActivityImageSearch : AppCompatActivity() {
 
-    private val viewModel: CharacterListViewModel by viewModels()
+    private val viewModel: ImageSearchViewModel by viewModels()
 
     private lateinit var viewer: StfalconImageViewer<Items>
 
     private val characterListAdapter =
-        CharacterListAdapter(this) { index, target ->
+        ImageResultsListAdapter(this) { index, target ->
 //            startActivity(ActivityCharacterDetail.prepareIntent(this, it))
             StfalconImageViewer.Builder<Items>(this, DataStore.lastSearch) { imageView, item ->
-                Glide.with(this@ActivityCharacterSelect).load(item.link).into(imageView)
+                Glide.with(this@ActivityImageSearch).load(item.link).into(imageView)
             }
                 .withStartPosition(index)
                 .allowZooming(true)
@@ -46,12 +48,12 @@ class ActivityCharacterSelect : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_image_search)
 
         viewModel.result.observe(this, Observer {
             when(it) {
-                is CharacterStates.NetworkSuccess -> updateRecyclerView()
-                is CharacterStates.NetworkFailure -> {
+                is ImageSearchState.NetworkSuccess -> updateRecyclerView()
+                is ImageSearchState.NetworkFailure -> {
                     Toast.makeText(this, "Request failed", Toast.LENGTH_SHORT).show()
                 }
             }
@@ -142,6 +144,16 @@ class ActivityCharacterSelect : AppCompatActivity() {
             })
 
         seasonDialog.show()
+    }
+
+    companion object {
+        private const val EXTRA_SELECTED_IMAGE_INDEX = "EXTRA_IMAGE_INDEX"
+
+        fun prepareIntent(context: Context, index: Int) : Intent {
+            val intent = Intent(context, ActivityImageSearch::class.java)
+            intent.putExtra(EXTRA_SELECTED_IMAGE_INDEX, index)
+            return intent
+        }
     }
 
 }

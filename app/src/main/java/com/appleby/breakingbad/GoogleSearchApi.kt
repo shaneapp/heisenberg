@@ -10,7 +10,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-object BreakingBadApi {
+object GoogleSearchApi {
 
     val google_custom_search_api = "AIzaSyAWnd173TUhyEbEdCCHUnoHPrm6TwN3_O8"
     val search_engine_id = "53cafac25d3e1c82b"
@@ -22,10 +22,10 @@ object BreakingBadApi {
         .build()
 
     val service by lazy {
-        retrofit.create(BreakingBadApiService::class.java)
+        retrofit.create(GoogleSearchApiService::class.java)
     }
 
-    interface BreakingBadApiService {
+    interface GoogleSearchApiService {
         @GET("customsearch/v1")
         fun getGoogleImageResults(@Query("q") query : String,
                                   @Query("num") amount: Int,
