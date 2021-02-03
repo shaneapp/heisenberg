@@ -142,6 +142,7 @@ class ActivityImageSearch : AppCompatActivity() {
             .setItems(imageSizeDisplay, object : DialogInterface.OnClickListener {
                 override fun onClick(dialog: DialogInterface?, which: Int) {
                     dialog?.dismiss()
+                    viewModel.clearPreviousSearchCache()
                     viewModel.updateImageFilter(imageSizeCode[which])
                     viewModel.performImageSearch(etSearch.text.toString(), characterListAdapter.itemCount)
                 }
