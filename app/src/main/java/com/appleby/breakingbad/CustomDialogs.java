@@ -36,6 +36,9 @@ public class CustomDialogs {
 
         ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
 
+        ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(context.getResources().getColor(R.color.darkGray));
+        ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(context.getResources().getColor(R.color.lightGray));
+
         edittext.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {

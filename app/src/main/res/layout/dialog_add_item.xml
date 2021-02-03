@@ -9,6 +9,8 @@
         android:id="@+id/edittextMainField"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="@color/darkGray"
+        android:textStyle="bold"
         android:singleLine="true"
         android:textSize="20sp"
         android:layout_margin="20dp"/>

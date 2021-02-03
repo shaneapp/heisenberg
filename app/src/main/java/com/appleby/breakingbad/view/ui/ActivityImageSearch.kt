@@ -64,16 +64,20 @@ class ActivityImageSearch : AppCompatActivity() {
         staggeredLayout.gapStrategy = StaggeredGridLayoutManager.GAP_HANDLING_NONE
         rvCharacterList.layoutManager = staggeredLayout
         rvCharacterList.adapter = characterListAdapter
-        rvCharacterList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    viewModel.performImageSearch(etSearch.text.toString(), characterListAdapter.itemCount)
-                }
-            }
-        })
+//        rvCharacterList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+//            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+//                if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
+//                    viewModel.performImageSearch(etSearch.text.toString(), characterListAdapter.itemCount)
+//                }
+//            }
+//        })
 
         etSearch.doOnTextChanged { _, _, _, _ ->
             //viewModel.requestFilterRefresh()
+        }
+
+        buttonLoadMore.setOnClickListener {
+            viewModel.performImageSearch(etSearch.text.toString(), characterListAdapter.itemCount)
         }
 
         etSearch.setOnEditorActionListener(object : TextView.OnEditorActionListener {

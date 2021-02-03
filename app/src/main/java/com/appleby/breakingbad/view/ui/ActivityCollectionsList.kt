@@ -13,7 +13,7 @@ import com.appleby.breakingbad.view.adapter.CollectionsListAdapter
 import com.appleby.breakingbad.view.adapter.ImageResultsListAdapter
 import kotlinx.android.synthetic.main.activity_collections.*
 
-class ActivityCollections : AppCompatActivity() {
+class ActivityCollectionsList : AppCompatActivity() {
 
     private val collectionListAdapter = CollectionsListAdapter(this) {
         startActivity(ActivityCollectionDetail.prepareIntent(this, 0))
@@ -27,6 +27,7 @@ class ActivityCollections : AppCompatActivity() {
             CustomDialogs.addFolder(this) {
                 // add folder to database here
                 DataStore.collections.add(Collection(it))
+                refreshCollectionList()
             }
         }
 
@@ -37,6 +38,10 @@ class ActivityCollections : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
+        refreshCollectionList()
+    }
+
+    fun refreshCollectionList() {
         collectionListAdapter.updateData(DataStore.collections)
     }
 
