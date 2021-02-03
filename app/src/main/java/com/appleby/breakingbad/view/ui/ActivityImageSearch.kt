@@ -15,6 +15,7 @@ import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.appleby.breakingbad.CustomOverlayView
 import com.appleby.breakingbad.R
 import com.appleby.breakingbad.model.DataStore
 import com.appleby.breakingbad.networkmodel.Items
@@ -34,15 +35,25 @@ class ActivityImageSearch : AppCompatActivity() {
 
     private lateinit var viewer: StfalconImageViewer<Items>
 
+    private var overlayView: CustomOverlayView? = null
+
     private val characterListAdapter =
         ImageResultsListAdapter(this) { index, target ->
-//            startActivity(ActivityCharacterDetail.prepareIntent(this, it))
+
+            overlayView = CustomOverlayView(this).apply {
+                update(DataStore.lastSearch[index])
+            }
+
             StfalconImageViewer.Builder<Items>(this, DataStore.lastSearch) { imageView, item ->
                 Glide.with(this@ActivityImageSearch).load(item.link).into(imageView)
             }
+                .withOverlayView(overlayView)
                 .withStartPosition(index)
                 .allowZooming(true)
                 .withTransitionFrom(target)
+                .withImageChangeListener {
+                    overlayView?.update(DataStore.lastSearch[index])
+                }
                 .show()
         }
 
