@@ -1,22 +1,19 @@
 package com.appleby.breakingbad.view.ui
 
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.appleby.breakingbad.CustomDialogs
 import com.appleby.breakingbad.R
 import com.appleby.breakingbad.model.Collection
-import com.appleby.breakingbad.model.DataStore
+import com.appleby.breakingbad.model.ObjectBox
 import com.appleby.breakingbad.view.adapter.CollectionsListAdapter
-import com.appleby.breakingbad.view.adapter.ImageResultsListAdapter
 import kotlinx.android.synthetic.main.activity_collections.*
 
 class ActivityCollectionsList : AppCompatActivity() {
 
     private val collectionListAdapter = CollectionsListAdapter(this) {
-        startActivity(ActivityCollectionDetail.prepareIntent(this, 0))
+        startActivity(ActivityCollectionDetail.prepareIntent(this, it.id))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,9 +22,11 @@ class ActivityCollectionsList : AppCompatActivity() {
 
         ivAddCollection.setOnClickListener {
             CustomDialogs.addFolder(this) {
-                // add folder to database here
-                DataStore.collections.add(Collection(it))
+
+                val newCollection = Collection(name = it)
+                ObjectBox.collectionBox.put(newCollection)
                 refreshCollectionList()
+
             }
         }
 
@@ -42,7 +41,7 @@ class ActivityCollectionsList : AppCompatActivity() {
     }
 
     fun refreshCollectionList() {
-        collectionListAdapter.updateData(DataStore.collections)
+        collectionListAdapter.updateData(ObjectBox.collectionBox.all)
     }
 
 }

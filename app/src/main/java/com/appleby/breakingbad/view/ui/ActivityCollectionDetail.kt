@@ -6,13 +6,14 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.appleby.breakingbad.R
+import com.appleby.breakingbad.model.Collection
 import com.appleby.breakingbad.model.DataStore
+import com.appleby.breakingbad.model.ObjectBox
 import com.appleby.breakingbad.networkmodel.Items
 import com.appleby.breakingbad.view.adapter.ImageResultsListAdapter
 import com.bumptech.glide.Glide
 import com.stfalcon.imageviewer.StfalconImageViewer
 import kotlinx.android.synthetic.main.activity_collection_detail.*
-import kotlinx.android.synthetic.main.activity_image_search.*
 
 class ActivityCollectionDetail : AppCompatActivity() {
 
@@ -47,16 +48,23 @@ class ActivityCollectionDetail : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
-        //val selectedIndex = intent.getIntExtra(EXTRA_SELECTED_IMAGE_INDEX, 0)
-//        imagesInCollectionAdapter.updateData(filteredCharacters)
+        val selectedCollectionId = intent.getLongExtra(EXTRA_SELECTED_COLLECTION_ID, -1)
+        if (selectedCollectionId != -1L) {
+            val collection = ObjectBox.collectionBox[selectedCollectionId]
+            loadCollectionDetails(collection)
+        }
+    }
+
+    fun loadCollectionDetails(collection: Collection) {
+        tvCollectionTitle.text = collection.name?.toUpperCase()
     }
 
     companion object {
-        private const val EXTRA_SELECTED_IMAGE_INDEX = "EXTRA_IMAGE_INDEX"
+        private const val EXTRA_SELECTED_COLLECTION_ID = "EXTRA_COLLECTION_ID"
 
-        fun prepareIntent(context: Context, index: Int) : Intent {
+        fun prepareIntent(context: Context, collectionId: Long) : Intent {
             val intent = Intent(context, ActivityCollectionDetail::class.java)
-            intent.putExtra(EXTRA_SELECTED_IMAGE_INDEX, index)
+            intent.putExtra(EXTRA_SELECTED_COLLECTION_ID, collectionId)
             return intent
         }
     }
