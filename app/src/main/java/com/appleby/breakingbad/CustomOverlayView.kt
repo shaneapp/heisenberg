@@ -25,9 +25,9 @@ class CustomOverlayView @JvmOverloads constructor(
         setBackgroundColor(Color.TRANSPARENT)
     }
 
-    fun update(collection: Collection?, items: Items) {
+    fun update(collection: Collection?, pinnedImage: PinnedImage) {
         ivShare.setOnClickListener {
-            collection?.pinnedimages?.add(PinnedImage(imageUrl = items.link, thumbUrl = items.image.thumbnailLink))
+            collection?.pinnedimages?.add(PinnedImage(imageUrl = pinnedImage.imageUrl, thumbUrl = pinnedImage.thumbUrl))
             ObjectBox.collectionBox.put(collection)
             Toast.makeText(context, "Added to ${collection?.name}", Toast.LENGTH_SHORT).show()
         }

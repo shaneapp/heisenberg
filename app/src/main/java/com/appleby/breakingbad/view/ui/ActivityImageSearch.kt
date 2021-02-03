@@ -44,8 +44,11 @@ class ActivityImageSearch : AppCompatActivity() {
     private val characterListAdapter =
         ImageResultsListAdapter(this) { index, target ->
 
+            val networkImage = DataStore.lastSearch[index]
+            val clickedPinnedImage = PinnedImage(imageUrl = networkImage.link, thumbUrl = networkImage.image.thumbnailLink)
+
             overlayView = CustomOverlayView(this).apply {
-                update(parentCollection, DataStore.lastSearch[index])
+                update(parentCollection, clickedPinnedImage)
             }
 
             StfalconImageViewer.Builder<Items>(this, DataStore.lastSearch) { imageView, item ->
@@ -56,7 +59,7 @@ class ActivityImageSearch : AppCompatActivity() {
                 .allowZooming(true)
                 .withTransitionFrom(target)
                 .withImageChangeListener {
-                    overlayView?.update(parentCollection, DataStore.lastSearch[index])
+                    overlayView?.update(parentCollection, clickedPinnedImage)
                 }
                 .show()
         }

@@ -5,10 +5,12 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.appleby.breakingbad.CustomOverlayView
 import com.appleby.breakingbad.R
 import com.appleby.breakingbad.model.Collection
 import com.appleby.breakingbad.model.DataStore
 import com.appleby.breakingbad.model.ObjectBox
+import com.appleby.breakingbad.model.PinnedImage
 import com.appleby.breakingbad.networkmodel.Items
 import com.appleby.breakingbad.view.adapter.ImageResultsListAdapter
 import com.bumptech.glide.Glide
@@ -19,15 +21,27 @@ class ActivityCollectionDetail : AppCompatActivity() {
 
     private lateinit var viewer: StfalconImageViewer<Items>
 
+    private var overlayView: CustomOverlayView? = null
+
+    private var parentCollection: Collection? = null
+
     private val imagesInCollectionAdapter =
         ImageResultsListAdapter(this) { index, target ->
-//            startActivity(ActivityCharacterDetail.prepareIntent(this, it))
-            StfalconImageViewer.Builder<Items>(this, DataStore.lastSearch) { imageView, item ->
-                Glide.with(this@ActivityCollectionDetail).load(item.link).into(imageView)
+
+            overlayView = CustomOverlayView(this).apply {
+                update(parentCollection, parentCollection?.pinnedimages!!.get(index))
             }
+
+            StfalconImageViewer.Builder<PinnedImage>(this, parentCollection?.pinnedimages) { imageView, pinnedImage ->
+                Glide.with(this@ActivityCollectionDetail).load(pinnedImage.imageUrl).into(imageView)
+            }
+                .withOverlayView(overlayView)
                 .withStartPosition(index)
                 .allowZooming(true)
                 .withTransitionFrom(target)
+                .withImageChangeListener {
+                    overlayView?.update(parentCollection, parentCollection?.pinnedimages!!.get(index))
+                }
                 .show()
         }
 
@@ -46,19 +60,23 @@ class ActivityCollectionDetail : AppCompatActivity() {
 
         val selectedCollectionId = intent.getLongExtra(EXTRA_SELECTED_COLLECTION_ID, -1)
         if (selectedCollectionId != -1L) {
-            val collection = ObjectBox.collectionBox[selectedCollectionId]
-            loadCollectionDetails(collection)
+            parentCollection = ObjectBox.collectionBox[selectedCollectionId]
+            loadCollectionDetails(parentCollection)
         }
     }
 
-    fun loadCollectionDetails(collection: Collection) {
-        tvCollectionTitle.text = collection.name?.toUpperCase()
+    fun loadCollectionDetails(collection: Collection?) {
 
-        ivAddImages.setOnClickListener {
-            startActivity(ActivityImageSearch.prepareIntent(this, collection.id))
+        collection?.let {
+            tvCollectionTitle.text = it.name?.toUpperCase()
+
+            ivAddImages.setOnClickListener {
+                startActivity(ActivityImageSearch.prepareIntent(this, collection.id))
+            }
+
+            imagesInCollectionAdapter.updateData(it.pinnedimages)
         }
 
-        imagesInCollectionAdapter.updateData(collection.pinnedimages)
     }
 
     companion object {
