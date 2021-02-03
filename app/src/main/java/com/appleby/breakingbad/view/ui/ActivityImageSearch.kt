@@ -13,11 +13,12 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.appleby.breakingbad.CustomOverlayView
 import com.appleby.breakingbad.R
+import com.appleby.breakingbad.model.Collection
 import com.appleby.breakingbad.model.DataStore
+import com.appleby.breakingbad.model.ObjectBox
 import com.appleby.breakingbad.networkmodel.Items
 import com.appleby.breakingbad.view.adapter.ImageResultsListAdapter
 import com.appleby.breakingbad.viewmodel.ImageSearchViewModel
@@ -37,11 +38,13 @@ class ActivityImageSearch : AppCompatActivity() {
 
     private var overlayView: CustomOverlayView? = null
 
+    private var parentCollection: Collection? = null
+
     private val characterListAdapter =
         ImageResultsListAdapter(this) { index, target ->
 
             overlayView = CustomOverlayView(this).apply {
-                update(DataStore.lastSearch[index])
+                update(parentCollection, DataStore.lastSearch[index])
             }
 
             StfalconImageViewer.Builder<Items>(this, DataStore.lastSearch) { imageView, item ->
@@ -52,7 +55,7 @@ class ActivityImageSearch : AppCompatActivity() {
                 .allowZooming(true)
                 .withTransitionFrom(target)
                 .withImageChangeListener {
-                    overlayView?.update(DataStore.lastSearch[index])
+                    overlayView?.update(parentCollection, DataStore.lastSearch[index])
                 }
                 .show()
         }
@@ -112,6 +115,11 @@ class ActivityImageSearch : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
+        val parentCollectionId = intent.getLongExtra(ActivityImageSearch.EXTRA_PARENT_COLLECTION_ID, -1)
+        if (parentCollectionId != -1L) {
+            parentCollection = ObjectBox.collectionBox[parentCollectionId]
+        }
+
         refreshUsageInfo()
     }
 
@@ -163,11 +171,11 @@ class ActivityImageSearch : AppCompatActivity() {
     }
 
     companion object {
-        private const val EXTRA_SELECTED_IMAGE_INDEX = "EXTRA_IMAGE_INDEX"
+        private const val EXTRA_PARENT_COLLECTION_ID = "EXTRA_PARENT_COLLECTION_ID"
 
-        fun prepareIntent(context: Context, index: Int) : Intent {
+        fun prepareIntent(context: Context, collectionId: Long) : Intent {
             val intent = Intent(context, ActivityImageSearch::class.java)
-            intent.putExtra(EXTRA_SELECTED_IMAGE_INDEX, index)
+            intent.putExtra(EXTRA_PARENT_COLLECTION_ID, collectionId)
             return intent
         }
     }

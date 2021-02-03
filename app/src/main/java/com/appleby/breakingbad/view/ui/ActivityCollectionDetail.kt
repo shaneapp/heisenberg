@@ -39,10 +39,6 @@ class ActivityCollectionDetail : AppCompatActivity() {
         staggeredLayout.gapStrategy = StaggeredGridLayoutManager.GAP_HANDLING_NONE
         rvCollectionImages.layoutManager = staggeredLayout
         rvCollectionImages.adapter = imagesInCollectionAdapter
-
-        ivAddImages.setOnClickListener {
-            startActivity(ActivityImageSearch.prepareIntent(this, 0))
-        }
     }
 
     override fun onResume() {
@@ -57,6 +53,10 @@ class ActivityCollectionDetail : AppCompatActivity() {
 
     fun loadCollectionDetails(collection: Collection) {
         tvCollectionTitle.text = collection.name?.toUpperCase()
+
+        ivAddImages.setOnClickListener {
+            startActivity(ActivityImageSearch.prepareIntent(this, collection.id))
+        }
     }
 
     companion object {

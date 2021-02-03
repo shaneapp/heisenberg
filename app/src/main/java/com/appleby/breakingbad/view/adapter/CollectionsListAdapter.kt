@@ -37,7 +37,7 @@ class CollectionsListAdapter(private val context: Context, private val itemClick
 //        holder.ivCharacterImage.clipToOutline = true
 
         holder.tvCollectionName.text = characterItem.name
-        holder.tvCollectionMeta.text = "X Pins"
+        holder.tvCollectionMeta.text = "${characterItem.pinnedimages.count()} Pins"
 
         holder.view.setOnClickListener { itemClick(characterItem) }
     }

@@ -6,6 +6,9 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
+import com.appleby.breakingbad.model.Collection
+import com.appleby.breakingbad.model.ObjectBox
+import com.appleby.breakingbad.model.PinnedImage
 import com.appleby.breakingbad.networkmodel.Items
 import kotlinx.android.synthetic.main.view_overlay_gallery.view.*
 
@@ -22,7 +25,11 @@ class CustomOverlayView @JvmOverloads constructor(
         setBackgroundColor(Color.TRANSPARENT)
     }
 
-    fun update(items: Items) {
-        ivShare.setOnClickListener { Toast.makeText(context, "Yolo", Toast.LENGTH_SHORT).show() }
+    fun update(collection: Collection?, items: Items) {
+        ivShare.setOnClickListener {
+            collection?.pinnedimages?.add(PinnedImage(imageUrl = items.link, thumbUrl = items.image.thumbnailLink))
+            ObjectBox.collectionBox.put(collection)
+            Toast.makeText(context, "Added to ${collection?.name}", Toast.LENGTH_SHORT).show()
+        }
     }
 }
