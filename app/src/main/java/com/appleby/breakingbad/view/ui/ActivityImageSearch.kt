@@ -45,7 +45,7 @@ class ActivityImageSearch : AppCompatActivity() {
         ImageResultsListAdapter(this) { index, target ->
 
             val networkImage = DataStore.lastSearch[index]
-            val clickedPinnedImage = PinnedImage(imageUrl = networkImage.link, thumbUrl = networkImage.image.thumbnailLink)
+            val clickedPinnedImage = PinnedImage(imageUrl = networkImage.link, imageMimeType = networkImage.mime, thumbUrl = networkImage.image.thumbnailLink)
 
             overlayView = CustomOverlayView(this).apply {
                 update(parentCollection, clickedPinnedImage)

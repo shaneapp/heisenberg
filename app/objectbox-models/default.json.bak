@@ -1,0 +1,69 @@
+{
+  "_note1": "KEEP THIS FILE! Check it into a version control system (VCS) like git.",
+  "_note2": "ObjectBox manages crucial IDs for your object model. See docs for details.",
+  "_note3": "If you have VCS merge conflicts, you must resolve them according to ObjectBox docs.",
+  "entities": [
+    {
+      "id": "1:1085457955502177780",
+      "lastPropertyId": "2:1899549200341382553",
+      "name": "Collection",
+      "properties": [
+        {
+          "id": "1:2270534844723334925",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:1899549200341382553",
+          "name": "name",
+          "type": 9
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "2:1660528337012970042",
+      "lastPropertyId": "4:8487128374115311726",
+      "name": "PinnedImage",
+      "properties": [
+        {
+          "id": "1:2490926346279765090",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:8793843875976305380",
+          "name": "imageUrl",
+          "type": 9
+        },
+        {
+          "id": "3:1066774159950750121",
+          "name": "thumbUrl",
+          "type": 9
+        },
+        {
+          "id": "4:8487128374115311726",
+          "name": "collectionId",
+          "indexId": "1:6138179677486789067",
+          "type": 11,
+          "flags": 1548,
+          "relationTarget": "Collection"
+        }
+      ],
+      "relations": []
+    }
+  ],
+  "lastEntityId": "2:1660528337012970042",
+  "lastIndexId": "1:6138179677486789067",
+  "lastRelationId": "0:0",
+  "lastSequenceId": "0:0",
+  "modelVersion": 5,
+  "modelVersionParserMinimum": 5,
+  "retiredEntityUids": [],
+  "retiredIndexUids": [],
+  "retiredPropertyUids": [],
+  "retiredRelationUids": [],
+  "version": 1
+}

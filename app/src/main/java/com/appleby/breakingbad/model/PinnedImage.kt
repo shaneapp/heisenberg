@@ -8,6 +8,7 @@ import io.objectbox.relation.ToOne
 data class PinnedImage(
     @Id var id: Long = 0,
     var imageUrl: String? = null,
+    var imageMimeType: String? = null,
     var thumbUrl: String? = null
 ) {
     lateinit var collection: ToOne<Collection>
