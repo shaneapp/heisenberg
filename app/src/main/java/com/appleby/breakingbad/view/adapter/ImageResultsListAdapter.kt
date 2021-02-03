@@ -7,13 +7,14 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.appleby.breakingbad.R
+import com.appleby.breakingbad.model.PinnedImage
 import com.appleby.breakingbad.networkmodel.Items
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.character_listitem.view.*
 
 class ImageResultsListAdapter(private val context: Context, private val itemClick: ((index: Int, target: ImageView) -> Unit)) : RecyclerView.Adapter<ImageResultsListAdapter.ViewHolder>() {
 
-    private val characterData = mutableListOf<Items>()
+    private val pinnedImageData = mutableListOf<PinnedImage>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         var layoutInflater = LayoutInflater.from(parent.context)
@@ -27,10 +28,10 @@ class ImageResultsListAdapter(private val context: Context, private val itemClic
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val characterItem = characterData[position]
+        val pinnedImage = pinnedImageData[position]
 
         Glide.with(context)
-            .load(characterItem.link)
+            .load(pinnedImage.imageUrl)
             .into(holder.ivCharacterImage)
 
         holder.ivCharacterImage.clipToOutline = true
@@ -41,12 +42,12 @@ class ImageResultsListAdapter(private val context: Context, private val itemClic
     }
 
     override fun getItemCount(): Int {
-        return characterData.count()
+        return pinnedImageData.count()
     }
 
-    fun updateData(data: List<Items>) {
-        characterData.clear()
-        characterData.addAll(data)
+    fun updateData(data: List<PinnedImage>) {
+        pinnedImageData.clear()
+        pinnedImageData.addAll(data)
         notifyDataSetChanged()
     }
 

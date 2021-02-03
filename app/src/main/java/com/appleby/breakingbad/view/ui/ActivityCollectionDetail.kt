@@ -57,6 +57,8 @@ class ActivityCollectionDetail : AppCompatActivity() {
         ivAddImages.setOnClickListener {
             startActivity(ActivityImageSearch.prepareIntent(this, collection.id))
         }
+
+        imagesInCollectionAdapter.updateData(collection.pinnedimages)
     }
 
     companion object {

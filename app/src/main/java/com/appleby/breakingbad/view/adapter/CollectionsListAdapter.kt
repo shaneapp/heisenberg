@@ -28,18 +28,20 @@ class CollectionsListAdapter(private val context: Context, private val itemClick
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val characterItem = collectionData[position]
+        val collection = collectionData[position]
 
-//        Glide.with(context)
-//            .load(characterItem.link)
-//            .into(holder.ivCharacterImage)
+        if (collection.pinnedimages.count() > 0) {
+            Glide.with(context)
+                .load(collection.pinnedimages.first().imageUrl)
+                .into(holder.ivIconPreview)
 
-//        holder.ivCharacterImage.clipToOutline = true
+            holder.ivIconPreview.clipToOutline = true
+        }
 
-        holder.tvCollectionName.text = characterItem.name
-        holder.tvCollectionMeta.text = "${characterItem.pinnedimages.count()} Pins"
+        holder.tvCollectionName.text = collection.name
+        holder.tvCollectionMeta.text = "${collection.pinnedimages.count()} Pins"
 
-        holder.view.setOnClickListener { itemClick(characterItem) }
+        holder.view.setOnClickListener { itemClick(collection) }
     }
 
     override fun getItemCount(): Int {

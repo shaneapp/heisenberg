@@ -19,6 +19,7 @@ import com.appleby.breakingbad.R
 import com.appleby.breakingbad.model.Collection
 import com.appleby.breakingbad.model.DataStore
 import com.appleby.breakingbad.model.ObjectBox
+import com.appleby.breakingbad.model.PinnedImage
 import com.appleby.breakingbad.networkmodel.Items
 import com.appleby.breakingbad.view.adapter.ImageResultsListAdapter
 import com.appleby.breakingbad.viewmodel.ImageSearchViewModel
@@ -136,7 +137,7 @@ class ActivityImageSearch : AppCompatActivity() {
     }
 
     private fun updateRecyclerView() {
-        var filteredCharacters = DataStore.lastSearch
+        var filteredCharacters = DataStore.lastSearch.map { PinnedImage(imageUrl = it.link, thumbUrl = it.image.thumbnailLink) }
 
         refreshUsageInfo()
 
