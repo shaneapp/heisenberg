@@ -52,6 +52,7 @@ class ActivityCollectionDetail : AppCompatActivity() {
                         )
                     }
                     .show()
+
             }, itemLongPress = { index: Int, target: ImageView ->
 
                 CustomDialogs.showDeleteDialog(this) {
@@ -87,14 +88,28 @@ class ActivityCollectionDetail : AppCompatActivity() {
 
     fun loadCollectionDetails(collection: Collection?) {
 
-        collection?.let {
-            tvCollectionTitle.text = it.name?.toUpperCase()
+        collection?.let { loadedCollection ->
+            tvCollectionTitle.text = loadedCollection.name?.toUpperCase()
 
             ivAddImages.setOnClickListener {
                 startActivity(ActivityImageSearch.prepareIntent(this, collection.id))
             }
 
-            imagesInCollectionAdapter.updateData(it.pinnedimages)
+            ivShareCollection.setOnClickListener {
+                var sharedString = ""
+                loadedCollection.pinnedimages.forEach {
+                    sharedString += it.imageUrl + System.lineSeparator()
+                }
+
+                val shareLink = Intent(Intent.ACTION_SEND).apply {
+                    type = "text/plain"
+                    putExtra(Intent.EXTRA_SUBJECT, "Image Link")
+                    putExtra(Intent.EXTRA_TEXT, sharedString)
+                }
+                startActivity(Intent.createChooser(shareLink, "Share Link"))
+            }
+
+            imagesInCollectionAdapter.updateData(loadedCollection.pinnedimages)
         }
 
     }
