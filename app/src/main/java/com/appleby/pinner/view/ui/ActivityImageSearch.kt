@@ -131,11 +131,12 @@ class ActivityImageSearch : AppCompatActivity() {
         val timeZone = DateTimeZone.forID("America/Los_Angeles")
         val midnightInPT = DateTime(timeZone).plusDays(1).withTimeAtStartOfDay()
         val timeBetweenNowAndMidnightPT = Period(DateTime.now(), midnightInPT)
-        if (DataStore.googleApiUsageCounter < 1) {
+        val remainingRequests = ObjectBox.settingsBox[1].apiRequestCount
+        if (remainingRequests < 1) {
             tvApiUsage.text =
                 "Usage resets in ${timeBetweenNowAndMidnightPT.hours}h ${timeBetweenNowAndMidnightPT.minutes}m"
         } else {
-            tvApiUsage.text = DataStore.googleApiUsageCounter.toString()
+            tvApiUsage.text = remainingRequests.toString()
         }
     }
 

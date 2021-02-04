@@ -2,10 +2,10 @@ package com.appleby.pinner
 
 import android.app.Application
 import com.appleby.pinner.model.ObjectBox
+import com.appleby.pinner.model.Settings
 import com.downloader.PRDownloader
 import com.downloader.PRDownloaderConfig
-
-
+import java.util.*
 
 
 class MyApplication : Application() {
@@ -20,6 +20,8 @@ class MyApplication : Application() {
             .setConnectTimeout(30000)
             .build()
         PRDownloader.initialize(this, config)
+
+        ObjectBox.settingsBox.put(Settings(apiRequestCount = 100, apiRequestsLastUpdated = Date()))
     }
 
 }

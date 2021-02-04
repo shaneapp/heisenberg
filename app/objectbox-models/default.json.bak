@@ -24,7 +24,7 @@
     },
     {
       "id": "2:1660528337012970042",
-      "lastPropertyId": "4:8487128374115311726",
+      "lastPropertyId": "5:7134390876213594185",
       "name": "PinnedImage",
       "properties": [
         {
@@ -50,12 +50,37 @@
           "type": 11,
           "flags": 1548,
           "relationTarget": "Collection"
+        },
+        {
+          "id": "5:7134390876213594185",
+          "name": "imageMimeType",
+          "type": 9
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "3:3805470992040235378",
+      "lastPropertyId": "2:8742759971559906449",
+      "name": "Settings",
+      "properties": [
+        {
+          "id": "1:2251034081507084333",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:8742759971559906449",
+          "name": "apiRequestCount",
+          "type": 5,
+          "flags": 4
         }
       ],
       "relations": []
     }
   ],
-  "lastEntityId": "2:1660528337012970042",
+  "lastEntityId": "3:3805470992040235378",
   "lastIndexId": "1:6138179677486789067",
   "lastRelationId": "0:0",
   "lastSequenceId": "0:0",

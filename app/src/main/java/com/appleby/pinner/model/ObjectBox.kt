@@ -8,6 +8,7 @@ object ObjectBox {
 
     val collectionBox: Box<Collection> by lazy { boxStore.boxFor(Collection::class.java) }
     val pinnedimageBox: Box<PinnedImage> by lazy { boxStore.boxFor(PinnedImage::class.java) }
+    val settingsBox: Box<Settings> by lazy { boxStore.boxFor(Settings::class.java) }
 
     lateinit var boxStore: BoxStore
         private set

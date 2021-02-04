@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.appleby.pinner.GoogleSearchApi
 import com.appleby.pinner.model.DataStore
+import com.appleby.pinner.model.ObjectBox
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
@@ -30,7 +31,10 @@ class ImageSearchViewModel : ViewModel() {
                 if (characterResponse.isSuccessful) {
                     characterResponse.body()?.let {
 
-                        DataStore.googleApiUsageCounter -= 1
+                        val settings = ObjectBox.settingsBox[1]
+                        settings.apiRequestCount -= 1
+                        ObjectBox.settingsBox.put(settings)
+
                         DataStore.lastSearch.addAll(it.items)
                         _result.value = ImageSearchState.NetworkSuccess
 
