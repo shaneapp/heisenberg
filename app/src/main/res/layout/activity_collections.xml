@@ -21,6 +21,16 @@
             android:text="COLLECTIONS"/>
 
         <ImageView
+            android:id="@+id/ivDownloadFolder"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:padding="3dp"
+            app:tint="@color/offBlack"
+            android:clickable="true"
+            android:layout_marginRight="32dp"
+            android:src="@drawable/folder"/>
+
+        <ImageView
             android:id="@+id/ivAddCollection"
             android:layout_width="32dp"
             android:layout_height="32dp"
