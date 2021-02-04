@@ -11,7 +11,9 @@ import com.appleby.pinner.model.PinnedImage
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.character_listitem.view.*
 
-class ImageResultsListAdapter(private val context: Context, private val itemClick: ((index: Int, target: ImageView) -> Unit)) : RecyclerView.Adapter<ImageResultsListAdapter.ViewHolder>() {
+class ImageResultsListAdapter(private val context: Context,
+                              private val itemClick: ((index: Int, target: ImageView) -> Unit),
+                              private val itemLongPress: ((index: Int, target: ImageView) -> Boolean)) : RecyclerView.Adapter<ImageResultsListAdapter.ViewHolder>() {
 
     private val pinnedImageData = mutableListOf<PinnedImage>()
 
@@ -35,9 +37,8 @@ class ImageResultsListAdapter(private val context: Context, private val itemClic
 
         holder.ivCharacterImage.clipToOutline = true
 
-        //holder.ivCharacterName.text = characterItem.name
-
         holder.view.setOnClickListener { itemClick(position, holder.ivCharacterImage) }
+        holder.view.setOnLongClickListener { itemLongPress(position, holder.ivCharacterImage) }
     }
 
     override fun getItemCount(): Int {

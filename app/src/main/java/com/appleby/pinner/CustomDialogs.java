@@ -60,4 +60,20 @@ public class CustomDialogs {
 
     }
 
+    public static void showDeleteDialog(Activity activity, View.OnClickListener confirmDeleteClickListener) {
+        AlertDialog.Builder alert = new AlertDialog.Builder(activity);
+        alert.setTitle("Delete");
+        alert.setMessage("Are you sure?");
+
+        alert.setPositiveButton("Confirm", (dialog, which) -> {
+
+            confirmDeleteClickListener.onClick(null);
+
+        });
+
+        alert.setNegativeButton("Cancel", (dialog, which) -> {});
+
+        AlertDialog alertDialog = alert.show();
+    }
+
 }

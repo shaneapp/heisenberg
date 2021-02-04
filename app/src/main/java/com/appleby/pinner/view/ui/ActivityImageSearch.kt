@@ -42,7 +42,7 @@ class ActivityImageSearch : AppCompatActivity() {
     private var parentCollection: Collection? = null
 
     private val characterListAdapter =
-        ImageResultsListAdapter(this) { index, target ->
+        ImageResultsListAdapter(this, { index, target ->
 
             val networkImage = DataStore.lastSearch[index]
             val clickedPinnedImage = PinnedImage(imageUrl = networkImage.link, imageMimeType = networkImage.mime, thumbUrl = networkImage.image.thumbnailLink)
@@ -64,7 +64,9 @@ class ActivityImageSearch : AppCompatActivity() {
                     overlayView?.update(parentCollection, changedToClickedPinnedImage)
                 }
                 .show()
-        }
+        }, { _, _ ->
+            true
+        })
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -116,6 +118,8 @@ class ActivityImageSearch : AppCompatActivity() {
         ivFilter.setOnClickListener {
             showSeasonFilter()
         }
+
+        etSearch.requestFocus()
     }
 
     override fun onResume() {

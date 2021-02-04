@@ -3,8 +3,10 @@ package com.appleby.pinner.view.ui
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.appleby.pinner.CustomDialogs
 import com.appleby.pinner.CustomOverlayView
 import com.appleby.pinner.R
 import com.appleby.pinner.model.Collection
@@ -25,24 +27,43 @@ class ActivityCollectionDetail : AppCompatActivity() {
     private var parentCollection: Collection? = null
 
     private val imagesInCollectionAdapter =
-        ImageResultsListAdapter(this) { index, target ->
+        ImageResultsListAdapter(this,
+            itemClick = { index, target ->
 
-            overlayView = CustomOverlayView(this).apply {
-                update(parentCollection, parentCollection?.pinnedimages!!.get(index))
-            }
-
-            StfalconImageViewer.Builder<PinnedImage>(this, parentCollection?.pinnedimages) { imageView, pinnedImage ->
-                Glide.with(this@ActivityCollectionDetail).load(pinnedImage.imageUrl).into(imageView)
-            }
-                .withOverlayView(overlayView)
-                .withStartPosition(index)
-                .allowZooming(true)
-                .withTransitionFrom(target)
-                .withImageChangeListener {
-                    overlayView?.update(parentCollection, parentCollection?.pinnedimages!!.get(index))
+                overlayView = CustomOverlayView(this).apply {
+                    update(parentCollection, parentCollection?.pinnedimages!!.get(index))
                 }
-                .show()
-        }
+
+                StfalconImageViewer.Builder<PinnedImage>(
+                    this,
+                    parentCollection?.pinnedimages
+                ) { imageView, pinnedImage ->
+                    Glide.with(this@ActivityCollectionDetail).load(pinnedImage.imageUrl)
+                        .into(imageView)
+                }
+                    .withOverlayView(overlayView)
+                    .withStartPosition(index)
+                    .allowZooming(true)
+                    .withTransitionFrom(target)
+                    .withImageChangeListener {
+                        overlayView?.update(
+                            parentCollection,
+                            parentCollection?.pinnedimages!!.get(index)
+                        )
+                    }
+                    .show()
+            }, itemLongPress = { index: Int, target: ImageView ->
+
+                CustomDialogs.showDeleteDialog(this) {
+                    val imageToDelete = parentCollection?.pinnedimages!!.get(index)
+                    parentCollection?.pinnedimages!!.remove(imageToDelete)
+                    ObjectBox.pinnedimageBox.remove(imageToDelete)
+                    loadCollectionDetails(parentCollection)
+                }
+
+                true
+
+            })
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
