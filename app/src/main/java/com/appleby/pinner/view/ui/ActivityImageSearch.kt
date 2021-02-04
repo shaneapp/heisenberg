@@ -59,7 +59,9 @@ class ActivityImageSearch : AppCompatActivity() {
                 .allowZooming(true)
                 .withTransitionFrom(target)
                 .withImageChangeListener {
-                    overlayView?.update(parentCollection, clickedPinnedImage)
+                    val changedToNetworkImage = DataStore.lastSearch[it]
+                    val changedToClickedPinnedImage = PinnedImage(imageUrl = changedToNetworkImage.link, imageMimeType = changedToNetworkImage.mime, thumbUrl = changedToNetworkImage.image.thumbnailLink)
+                    overlayView?.update(parentCollection, changedToClickedPinnedImage)
                 }
                 .show()
         }
