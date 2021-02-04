@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.appleby.pinner.CustomDialogs
 import com.appleby.pinner.CustomOverlayView
+import com.appleby.pinner.DownloadHelper
 import com.appleby.pinner.R
 import com.appleby.pinner.model.Collection
 import com.appleby.pinner.model.ObjectBox
@@ -107,6 +108,12 @@ class ActivityCollectionDetail : AppCompatActivity() {
                     putExtra(Intent.EXTRA_TEXT, sharedString)
                 }
                 startActivity(Intent.createChooser(shareLink, "Share Link"))
+            }
+
+            ivDownloadAll.setOnClickListener {
+                for (image in loadedCollection.pinnedimages) {
+                    DownloadHelper.downloadPinnedImage(this, image, loadedCollection.name!!)
+                }
             }
 
             imagesInCollectionAdapter.updateData(loadedCollection.pinnedimages)

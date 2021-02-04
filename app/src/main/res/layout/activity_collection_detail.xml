@@ -22,6 +22,16 @@
             android:text="NAME OF COLLECTION"/>
 
         <ImageView
+            android:id="@+id/ivDownloadAll"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:padding="3dp"
+            app:tint="@color/offBlack"
+            android:clickable="true"
+            android:layout_marginRight="32dp"
+            android:src="@drawable/download"/>
+
+        <ImageView
             android:id="@+id/ivShareCollection"
             android:layout_width="32dp"
             android:layout_height="32dp"

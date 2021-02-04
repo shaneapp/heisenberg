@@ -48,30 +48,7 @@ class CustomOverlayView @JvmOverloads constructor(
         }
 
         ivDownload.setOnClickListener {
-            val downloadDir = context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)?.path
-            val charPool : List<Char> = ('a'..'z') + ('A'..'Z')
-
-            val filename = (1..20)
-                .map { i -> kotlin.random.Random.nextInt(0, charPool.size) }
-                .map(charPool::get)
-                .joinToString("")
-
-            val ext = MimeTypeMap.getSingleton().getExtensionFromMimeType(pinnedImage.imageMimeType)
-//            val fileExtension = pinnedImage.imageUrl?.substringAfterLast(".", "")
-
-            PRDownloader
-                .download(pinnedImage.imageUrl, downloadDir, "${filename}.${ext}")
-                .build()
-                .start(object : OnDownloadListener {
-                    override fun onDownloadComplete() {
-                        Toast.makeText(context, "Download completed", Toast.LENGTH_SHORT).show()
-                    }
-
-                    override fun onError(error: Error?) {
-                        Toast.makeText(context, "Error downloading", Toast.LENGTH_SHORT).show()
-                    }
-
-                })
+            DownloadHelper.downloadPinnedImage(context, pinnedImage, "", true)
         }
     }
 }
