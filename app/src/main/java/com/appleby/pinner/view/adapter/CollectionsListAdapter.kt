@@ -10,7 +10,9 @@ import com.appleby.pinner.model.Collection
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.collection_listitem.view.*
 
-class CollectionsListAdapter(private val context: Context, private val itemClick: ((collection: Collection) -> Unit)) : RecyclerView.Adapter<CollectionsListAdapter.ViewHolder>() {
+class CollectionsListAdapter(private val context: Context,
+                             private val itemClick: ((collection: Collection) -> Unit),
+                             private val longItemClick: ((index: Int) -> Boolean)) : RecyclerView.Adapter<CollectionsListAdapter.ViewHolder>() {
 
     private val collectionData = mutableListOf<Collection>()
 
@@ -40,6 +42,7 @@ class CollectionsListAdapter(private val context: Context, private val itemClick
         holder.tvCollectionMeta.text = "${collection.pinnedimages.count()} Pins"
 
         holder.view.setOnClickListener { itemClick(collection) }
+        holder.view.setOnLongClickListener { longItemClick(position) }
     }
 
     override fun getItemCount(): Int {

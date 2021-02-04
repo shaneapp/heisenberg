@@ -19,9 +19,22 @@ import java.util.*
 
 class ActivityCollectionsList : AppCompatActivity() {
 
-    private val collectionListAdapter = CollectionsListAdapter(this) {
+    private val collectionListAdapter = CollectionsListAdapter(this, {
         startActivity(ActivityCollectionDetail.prepareIntent(this, it.id))
-    }
+    }, { index ->
+
+        CustomDialogs.showDeleteDialog(this) {
+            val collectionToDelete = ObjectBox.collectionBox.all.get(index)
+            for (image in collectionToDelete.pinnedimages) {
+                ObjectBox.pinnedimageBox.remove(image)
+            }
+            ObjectBox.collectionBox.remove(collectionToDelete)
+            refreshCollectionList()
+        }
+
+        true
+
+    })
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
